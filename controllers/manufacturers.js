@@ -9,13 +9,19 @@ const getAllManufacturers = async (request, response) => {
   return response.send(manufacturers)
 }
 
-const getAllManufacturersById = async (request, response) => {
+const getManufacturerByName = async (request, response) => {
   try {
-    const { id } = request.params
+    const { name } = request.params
 
     const manufacturerId = await models.Manufacturers.findOne({
-      where: { id },
-      // include: [{ model: models.Products }],
+      where: {
+        name: { [models.Op.like]: `%${name}%` }
+      },
+      attributes: ['id', 'name', 'country'],
+      include: [{
+        model: models.Products,
+        attributes: ['id', 'name', 'yearIntroduced']
+      }],
     })
 
     return manufacturerId
@@ -28,5 +34,5 @@ const getAllManufacturersById = async (request, response) => {
 
 module.exports = {
   getAllManufacturers,
-  getAllManufacturersById
+  getManufacturerByName,
 }

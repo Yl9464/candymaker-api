@@ -19,5 +19,6 @@ Products.belongsTo(Manufacturers)
 
 module.exports = {
   Manufacturers,
-  Products
+  Products,
+  Op: Sequelize.Op
 }
